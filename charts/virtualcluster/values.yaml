@@ -1,5 +1,9 @@
 vcluster:
   controlPlane:
+    distro:
+      k8s:
+        apiServer: 
+          extraArgs: []
     ingress:
       enabled: true
       host: vcluster.local # this will need setting by the provisioner, as well as TLS settings and annotations

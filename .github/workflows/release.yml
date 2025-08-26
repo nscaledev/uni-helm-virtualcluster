@@ -18,6 +18,20 @@ jobs:
       uses: azure/setup-helm@v3
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Setup Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+    - name: Install helm-docs
+      run: go install github.com/norwoodj/helm-docs/cmd/helm-docs@latest
+    - name: Generate Helm docs
+      run: make docs
+    - name: Commit updated docs
+      run: |
+        git add charts/*/README.md
+        if ! git diff --cached --quiet; then
+          git commit -m "Update Helm chart documentation"
+        fi
     - name: Release
       uses: helm/chart-releaser-action@v1.4.1
       env:
